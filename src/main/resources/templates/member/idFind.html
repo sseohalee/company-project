@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>로그인</title>
+
+  <!-- Main CSS : Header, Main, Footer -->
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/common.css">
+  <!--  <link rel="stylesheet" href="../css/member/login.css">-->
+  <link rel="stylesheet" href="../css/member/idFind.css">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+  <!-- Bootstarp JS -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
+
+  <script>
+    $(document).ready(function(){
+      $('#headerTop').load("../headerTop-sub.html");
+      $('#header').load("../header-sub.html");
+      $('#footer').load("../footer-sub.html");
+    });
+  </script>
+
+</head>
+<body>
+<!-- 헤더 -->
+<!-- <div id="headerTop"></div> -->
+<div th:replace="/fragments/headerTop.html :: fragment-headerTop"></div>
+<!-- <div id="header" class="sticky-top"></div> -->
+<div th:replace="/fragments/header.html :: fragment-header"></div>
+
+<!-- 메인 -->
+<!-- COMMON -->
+<div class="commonSection1">
+  <div class="commonContent1">
+    <img src="../img/member/sub-visual01.jpg"
+         style="width: 100%; height: 100%;">
+    <div class="commonContent2 text-center">
+      <div>
+        <h3>MEMBER</h3>
+      </div>
+      <div>
+        <p><img src="../img/icon-home.png"> > 로그인</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container d-flex justify-content-center">
+  <div class="main">
+    <form action="/api/v1/member/idFind" name="idFindForm" method="post">
+      <table>
+        <tr>
+          <td colspan="2">아이디 찾기</td>
+        </tr>
+        <tr>
+          <td colspan="2">아이디를 잊어버리셨나요?<br>회원님의 성명과 이메일을 입력하여 주세요.</td>
+        </tr>
+        <tr>
+          <td style="width: 20%;">
+            <img src="../img/member/txt_join1.gif">
+            <img src="../img/member/txt_email.gif">
+          </td>
+          <td style="width: 80%;">
+            <input type="text" name="memberName">
+            <input type="text" class="emailText" name="memberEmail">
+          </td>
+        </tr>
+      </table>
+      <div><input type="image" src="../img/member/btn_confirm.gif" onclick="submit()"></div>
+      <div><input type="image" src="../img/member/btn_close.gif" onclick="window.close()"></div>
+    </form>
+  </div>
+
+</div>
+
+<script>
+  function submit() {
+    var form = document.idFindForm;
+
+    form.submit();
+  }
+</script>
+
+
+<!-- 푸터 -->
+<!--  <div id="footer"></div>-->
+<div th:replace="/fragments/footer.html :: fragment-footer"></div>
+</body>
+</html>

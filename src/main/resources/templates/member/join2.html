@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>회원가입2</title>
+
+  <!-- Main CSS : Header, Main, Footer -->
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/common.css">
+  <link rel="stylesheet" href="../css/member/join.css">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+
+  <!-- Bootstarp JS -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
+
+  <script>
+    $(document).ready(function(){
+      $('#headerTop').load("../headerTop-sub.html");
+      $('#header').load("../header-sub.html");     
+      $('#footer').load("../footer-sub.html");
+    });
+  </script>
+
+</head>
+<body>
+<!-- 헤더 -->
+<div th:replace="/fragments/headerTop.html :: fragment-headerTop"></div>
+<div th:replace="/fragments/header.html :: fragment-header" class="sticky-top"></div>
+
+<!-- 메인 -->
+<!-- COMMON -->
+<div class="commonSection1">
+  <div class="commonContent1">
+    <img src="../img/member/sub-visual02.jpg"
+         style="width: 100%; height: 100%;">
+    <div class="commonContent2 text-center">
+      <div>
+        <h3>MEMBER</h3>
+      </div>
+      <div>
+        <p><img src="../img/icon-home.png"> > 회원가입</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 메인 -->
+<!-- 회원가입 -->
+<div class="joinForm container">
+
+  <div class="joinSection1">
+    <div><h3>회원가입</h3></div>
+    <div><p>The design and maintenance are excellent.</p></div>
+  </div>
+  <div class="wellcome">
+    <h3>OOO사이트에 오신 것을 환영합니다.</h3>
+    <h5>-이름과 이메일을 입력해 주시면 가입여부를 확인 후 회원가입 절차가 이루어집니다.</h5>
+  </div>
+  <br><br>
+  <div class="contents">
+    <h3>회원가입을 위해서 아래의 양식에 있는 내용을 입력해 주셔야 합니다.</h3>
+    <h5>-회원님의 개인정보를 신중하게 보호하고 있으며 회원님의 동의 없이는 기재하신 회원정보가 누출되지 않습니다.
+      자세한 내용은 개인정보보호정책에서 확인하세요.</h5>
+  </div>
+  <!-- 입력폼 -->
+  <form action="/api/v1/member/join" method="post" name="memberInfo" onsubmit="return checkValue();">
+    <div class="information1">
+      <div>기본정보</div>
+
+      <table>
+        <tr>
+          <td>아이디</td>
+          <td>
+            <input type="text" name="memberId" id="memberId">
+            <button type="button" onclick="idDuplCheck();" />
+              <img src="../img/member/btn_iddupl.gif">
+            </button>
+
+            (영문 소문자, 숫자로 4~16자)
+          </td>
+        </tr>
+        <tr>
+          <td>비밀번호</td>
+          <td>
+            <input type="password" id="memberPw" name="memberPw">
+            영문/숫자/특수문자조합으로 8~16자리. 첫글자는 영문자로 사용
+          </td>
+        </tr>
+        <tr>
+          <td>비밀번호 확인</td>
+          <td><input type="password" name="memberPwCheck" id="memberPwCheck"></td>
+        </tr>
+        <tr>
+          <td>이름</td>
+          <td><input type="text" name="memberName" id="memberName"></td>
+        </tr>
+        <tr>
+          <td>이메일</td>
+          <td><input type="text" name="memberEmail" id="memberEmail"></td>
+        </tr>
+        <tr>
+          <td>이메일 수신여부</td>
+          <td><input type="radio" name="memberEmailReceive" value="1">수신
+            <input type="radio" name="memberEmailReceive" value="0">수신안함</td>
+        </tr>
+        <tr>
+          <td>비밀번호 확인시 질문</td>
+          <td>
+            <select class="size" name="memberPwQuestion" id="memberPwQuestion">
+              <option value="0">========선택========</option>
+              <option value="1">기억에 남는 추억의 장소는?</option>
+              <option value="2">자신의 인생 좌우명은?</option>
+              <option value="3">자신의 보물 제1호는?</option>
+              <option value="4">가장 기억에 남는 선생님 성함은?</option>
+              <option value="5">내가 좋아하는 캐릭터는?</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>비밀번호 확인시 답변</td>
+          <td><input type="text" name="memberPwAnswer" id="memberPwAnswer" value=""></td>
+        </tr>
+        <tr>
+          <td>성별</td>
+          <td><input type="radio" name="memberGender" value="male">남자
+            <input type="radio" name="memberGender" value="female">여자</td>
+        </tr>
+        <tr>
+          <td>생년월일</td>
+          <td>
+            <input type="date" name="memberBirthDate" id="memberBirthDate">
+          </td>
+        </tr>
+      </table>
+
+    </div>
+    <div class="Information2">부가정보</div>
+    <div class="imageBtn2">
+      <input type="submit" value="확인">
+      <input type="image" src="../img/member/btn_cancel.gif">
+    </div>
+  </form>
+
+</div>
+
+<!-- 푸터 -->
+<div th:replace="/fragments/footer.html :: fragment-footer"></div>
+
+
+<script>
+  function idDuplCheck(){
+    const memberId = document.getElementById("memberId").value;
+    if(!document.memberInfo.memberId.value){ // null 체크
+        alert("아이디를 입력하세요.");
+        document.getElementById('memberId').focus();
+        return false;
+    }
+    fetch("/api/v1/member/dupl", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              memberId: memberId
+            }),
+          })
+            .then((response) => {
+              return response.json();
+            }) //HTTP 응답
+            .then((json) => {
+              //{ status: "ok", message: "중복된 아이디가 있습니다." }
+              console.log(json);
+              console.log(json.message);
+              if(json.status == "ok"){
+                alert("중복된 아이디가 있습니다.");
+                document.getElementById('memberId').focus();
+              } else {
+                alert("아이디 사용가능합니다.");
+              }
+            }) //실제 데이타
+            .catch((error) => {
+              console.log(error);
+            });
+  }
+
+  function checkPw(){
+    if(document.memberInfo.memberPw.value.length<4){ // null 체크
+      alert("비밀번호는 4자리 이상만 가능합니다.");
+      document.getElementById('memberPw').focus();
+      return false;
+    }
+    if(document.memberInfo.memberPw.value != document.memberInfo.memberPwCheck.value){
+      alert("암호가 일치하지 않습니다. 다시 입력해주세요");
+      document.getElementById('memberPw').focus();
+      return false;
+    }
+
+    return true;
+  }
+
+  function checkValue(){
+  if(!document.memberInfo.memberId.value){ // null 체크
+      alert("아이디를 입력하세요.");
+      document.getElementById('memberId').focus();
+      return false;
+  }
+  if(!document.memberInfo.memberPw.value){ // null 체크
+      alert("비밀번호를 입력하세요.");
+      document.getElementById('memberPw').focus();
+      return false;
+  }
+  if(!document.memberInfo.memberPwCheck.value){ // null 체크
+      alert("비밀번호 확인을 입력하세요.");
+      document.getElementById('memberPwCheck').focus();
+      return false;
+  }
+  if(!document.memberInfo.memberName.value){ // null 체크
+      alert("이름을 입력하세요.");
+      document.getElementById('memberName').focus();
+      return false;
+  }
+  if(!document.memberInfo.memberEmail.value){ // null 체크
+      alert("이메일을 입력하세요.");
+      document.getElementById('memberEmail').focus();
+      return false;
+  }
+  if(!document.memberInfo.memberEmailReceive.value){ // null 체크
+      alert("이메일 수신여부를 선택하세요.");
+      return false;
+  }
+  if(document.memberInfo.memberPwQuestion.value==0){ // null 체크
+      alert("비밀번호 확인 질문을 선택해 주세요.");
+      return false;
+  }
+  if(!document.memberInfo.memberPwAnswer.value){ // null 체크
+      alert("비밀번호 확인 답변을 입력하세요.");
+      document.getElementById('memberPwAnswer').focus();
+      return false;
+  }
+  if(!document.memberInfo.memberGender.value){ // null 체크
+      alert("성별을 선택하세요.");
+      return false;
+  }
+  if(!document.memberInfo.memberBirthDate.value){ // null 체크
+      alert("생일을 입력하세요.");
+      document.getElementById('memberBirthDate').focus();
+      return false;
+  }
+  if(!checkPw()){
+    return false;
+  }
+
+  return true; // form 태그의 submit 통신이 이루어짐.
+}
+</script>
+
+</body>
+</html>
