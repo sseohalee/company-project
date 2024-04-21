@@ -5,6 +5,7 @@ import com.study.ProjectCompanyWeb.domain.member.MemberRepository;
 import com.study.ProjectCompanyWeb.service.MemberService;
 import io.micrometer.common.lang.Nullable;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -48,16 +49,26 @@ public class AdminController {
     public String admin_member(@RequestParam(value="searchType", required = false, defaultValue = "null") @Nullable String searchType,
                                @RequestParam(value="searchText", required = false, defaultValue = "null") @Nullable String searchText,
                                @RequestParam(value="order", required = false, defaultValue = "idAsc") String order,
-                               @RequestParam(value="max", required = false, defaultValue = "5") Long max,
+                               @RequestParam(value="max", required = false, defaultValue = "0") int max,
                                Model model){
         List<Member> list = null;
+        int page = 0;
 
-        // 검색 x, 모든 데이터에 대하여 정렬, 페이징 조건만
-        if(searchType.equals("null")){
-            list=memberService.findAllOrder(order, max);
-        } else {
-            list=memberService.searchByMember(searchType, searchText, order, max);
+        // 전체 멤버 길이 구하기
+        if(max==0) {
+            List<Member> all = memberService.findAll();
+            max=all.size();
         }
+
+        // 정렬 조건
+        PageRequest pageRequest = PageRequest.of(page, 5);
+        if(order.equals("idAsc")) pageRequest = PageRequest.of(page, max, Sort.by("member_id").ascending());
+        else if(order.equals("idDesc")) pageRequest = PageRequest.of(page, max, Sort.by("member_id").descending());
+        else if(order.equals("joinAsc")) pageRequest = PageRequest.of(page, max, Sort.by("member_join_date").ascending());
+        else if(order.equals("joinDesc")) pageRequest = PageRequest.of(page, max, Sort.by("member_join_date").descending());
+
+        list = memberService.findAllOrder(searchType, searchText, pageRequest);
+
 
         model.addAttribute("list",list);
         model.addAttribute("listSize", list.size());
