@@ -11,7 +11,8 @@
 <div class="top d-none d-md-block">
   <div class="topMenu d-none d-md-block container">
     <span class="home"><a href="/">HOME</a></span>
-    <span><a href="/member/login">LOGIN</a></span>
+    <span th:if="${session.isLogin == true}"><a href="/member/login">LOGOUT</a></span>
+    <span th:if="${session.isLogin == null}"><a href="/member/login">LOGIN</a></span>
     <span><a href="/member/join">JOIN</a></span>
     <span><a href="/company/company03">CONTACT US</a></span>
   </div>
