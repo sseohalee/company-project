@@ -69,9 +69,7 @@
               <input type="password" name="memberPw" id="memberPw" required>
             </td>
             <td>
-              <button type="submit">
-                <input class="loginImg" type="image" src="../img/member/btn_login.gif">
-              </button>
+              <input class="loginImg" type="image" src="/img/member/btn_login.gif">
             </td>
           </tr>
         </table>
@@ -81,7 +79,7 @@
           <tr>
             <td>-아이디를 잊으셨나요?</td>
             <td>
-              <a href="/idFind" target="_blank">
+              <a href="/idFind" onclick="window.open(this.href, '_blank','width=460, height=330'); return false;">
                 <input type="image" 
                 src="../img/member/btn_id_find.gif" />
               </a>
@@ -90,7 +88,7 @@
           <tr>
             <td>-비밀번호를 잊으셨나요?</td>
             <td>
-              <a href="/passwordFind" target="_blank">
+              <a href="/passwordFind" onclick="window.open(this.href,'_blank', 'width=460, height=330'); return false;">
                 <input type="image"
                 src="../img/member/btn_pw_find.gif" />
               </a>

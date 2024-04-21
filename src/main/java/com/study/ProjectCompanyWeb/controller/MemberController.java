@@ -64,26 +64,27 @@ public class MemberController {
 
         Optional<Member> optional = memberService.findByMemberId(dto.getMemberId());
         if(!optional.isPresent()){
-            return "<script>alert('아이디가 없습니다.'); location.href='/member/login';</script>";
+            return "<script>alert('아이디가 존재하지 않습니다.'); location.href='/member/login';</script>";
         }
 
         if(!optional.get().getMemberPw().equals(dto.getMemberPw())){
-            return "<script>alert('암호가 맞지 않습니다.'); location.href='/member/login';</script>";
+            return "<script>alert('비밀번호가 다릅니다.'); location.href='/member/login';</script>";
         }
 
         session.setAttribute("isLogin", true);
         session.setAttribute("memberId", optional.get().getMemberId());
         session.setAttribute("memberPw", optional.get().getMemberPw());
 
-        return "<script>alert('로그인 성공'); location.href='/';</script>";
+        return "<script>alert('로그인 되었습니다.'); location.href='/';</script>";
     }
 
     @PostMapping("/idFind")
     @ResponseBody
     public String idFind(@ModelAttribute MemberFindIdRequestDto dto){
-        Optional<Member> optional = memberService.findByMemberName(dto.getMemberName());
+        Optional<Member> optional = memberService.findByMemberNameAndMemberEmail(dto.getMemberName(), dto.getMemberEmail());
         String btn = "<br><div><button onclick='window.close()'>닫기</button></div>";
-        if(!optional.isPresent() || !optional.get().getMemberEmail().equals(dto.getMemberEmail())){
+
+        if(!optional.isPresent()){
             return "일치하는 아이디를 찾을 수 없습니다." + btn;
         }
 

@@ -50,7 +50,7 @@ public class CustomerController {
             if(!qna.getQnaPw().equals(qnaPw)){
                 return "<script>alert('비밀번호가 일치하지 않습니다.');window.close();</script>";
             }
-            return "<script>location.href='/customer/customer02_4?qnaIdx="+qnaIdx+"';</script>";
+            return "<script>window.opener.location.href='/customer/customer02_4?qnaIdx="+qnaIdx+"'; window.close();</script>";
         }catch (Exception e){
             e.printStackTrace();
             return "<script>alert('존재하지 않는 글입니다.');window.close();</script>";

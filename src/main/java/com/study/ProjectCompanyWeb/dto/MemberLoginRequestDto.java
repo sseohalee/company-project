@@ -9,6 +9,5 @@ import lombok.*;
 @NoArgsConstructor
 public class MemberLoginRequestDto {
     private String memberId;
-    @Size(min=4,max=20)
     private String memberPw;
 }

@@ -41,6 +41,10 @@ public class MemberService {
         return memberRepository.findAll().stream().filter(m -> m.getMemberName().equals(memberName)).findAny();
     }
 
+    public Optional<Member> findByMemberNameAndMemberEmail(String memberName, String memberEmail){
+        return memberRepository.findByMemberNameAndMemberEmail(memberName, memberEmail);
+    }
+
     public List<Member> findAll(){
         return memberRepository.findAll();
     }

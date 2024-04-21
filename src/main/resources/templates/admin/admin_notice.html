@@ -235,15 +235,15 @@
                 <th>작성일</th>
               </tr>
             </thead>
-            <tbody>
-              <tr th:each="notice, status : ${list}">
-                <td th:text="${status.count}"></td>
-                <td>
-                  <a th:text="${notice.noticeTitle}" th:href="@{/admin_notice_view?noticeIdx={noticeIdx}(noticeIdx=${notice.noticeIdx})}"></a>
-                </td>
-                <td th:text="${notice.noticeMemberId}"></td>
-                <td th:text="${notice.noticeDate}"></td>
-              </tr>
+            <tbody style="cursor: pointer;">
+              <span th:each="notice, status : ${list}">
+                <tr th:onclick="|location.href='@{/admin_notice_view?noticeIdx={noticeIdx}(noticeIdx=${notice.noticeIdx})}'|">
+                  <td th:text="${status.count}"></td>
+                  <td th:text="${notice.noticeTitle}"></td>
+                  <td th:text="${notice.noticeMemberId}"></td>
+                  <td th:text="${notice.noticeDate}"></td>
+                </tr>
+              </span>
             </tbody>
           </table>
         </div>

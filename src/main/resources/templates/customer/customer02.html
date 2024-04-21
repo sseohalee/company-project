@@ -29,8 +29,9 @@
 </head>
 <body>
   <!-- 헤더 -->
-  <div id="headerTop"></div>
-  <div id="header" class="sticky-top"></div>
+  <div th:replace="/fragments/headerTop.html :: fragment-headerTop"></div>
+  <div th:replace="/fragments/header.html :: fragment-header" class="sticky-top"></div>
+
 
   <!-- 메인 -->
   <!-- 1:1문의 -->
@@ -106,18 +107,18 @@
             <th>작성일</th>
           </tr>
         </thead>
-        <tbody>
-          <tr th:each="qna, status: ${list}">
-            <td th:text="${status.count}"></td>
-            <td>
-              <a th:href="@{/customer/customer02_3(qnaIdx=${qna.qnaIdx})}" target="_blank">
-                <img src="/img/customer/icon_sct.gif">
-                <span th:text="${qna.qnaTitle}" />
-              </a>
-            </td>
-            <td th:text="${qna.qnaName}"></td>
-            <td th:text="${qna.qnaDate}"></td>
-          </tr>
+        <tbody style="cursor: pointer;">
+          <span th:each="qna, status: ${list}">
+            <tr th:onclick="|window.open('@{/customer/customer02_3(qnaIdx=${qna.qnaIdx})}','_blank', 'width=460, height=330'); return false;|">
+              <td th:text="${status.count}"></td>
+              <td>
+                  <img src="/img/customer/icon_sct.gif">
+                  <span th:text="${qna.qnaTitle}" />
+              </td>
+              <td th:text="${qna.qnaName}"></td>
+              <td th:text="${qna.qnaDate}"></td>
+            </tr>
+          </span>
         </tbody>
       </table>
     </div>
@@ -154,11 +155,13 @@
   </div>
 
   <!-- 푸터 -->
-  <div id="footer"></div>
+  <div th:replace="/fragments/footer.html :: fragment-footer"></div>
+
 
   <script>
-    function openWindow( no ){
-      window.open('customer02_3.html?no='+no, '비밀번호확인', 'width=430,height=300,location=no,status=no,scrollbars=no')
+    function childWindow( this ){
+      var child;
+      
     }
   </script>
 </body>
