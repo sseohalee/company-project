@@ -45,18 +45,79 @@ public class MemberService {
         return memberRepository.findAll();
     }
 
-    public List<Member> findAllOrder(String order){
+    // ------------------------------------------------
+    @Transactional
+    public List<Member> findAllOrder(String order, Long max){
+        // 검색 x, 모든 데이터에 대하여 정렬, 페이징 조건만
+        List<Sort.Order> sorts = new ArrayList<>();
+        Sort sort = null;
+        int page = 0;
+
         if(order.equals("idAsc")){
-            return memberRepository.findAllByOrderByMemberIdAsc();
+            sorts.add(Sort.Order.asc("member_id"));
+            sort = Sort.by(Sort.Direction.ASC, "memberId");
         } else if(order.equals("idDesc")){
-            return memberRepository.findAllByOrderByMemberIdDesc();
+            sorts.add(Sort.Order.desc("member_id"));
+            sort = Sort.by(Sort.Direction.DESC, "memberId");
         } else if(order.equals("joinAsc")){
-            return memberRepository.findAllByOrderByMemberJoinDateAsc();
+            sorts.add(Sort.Order.asc("member_join_date"));
+            sort = Sort.by(Sort.Direction.ASC, "memberJoinDate");
         } else if(order.equals("joinDesc")){
-            return memberRepository.findAllByOrderByMemberJoinDateDesc();
+            sorts.add(Sort.Order.desc("member_join_date"));
+            sort = Sort.by(Sort.Direction.DESC, "memberJoinDate");
         }
+
+        // 전체보기 일 때
+        if(max==0){
+            return memberRepository.findAll(sort);
+        }
+
+        Pageable pageable = PageRequest.of(0, Math.toIntExact(max), Sort.by(sorts));
+
+        return memberRepository.findByMemberAll(pageable);
+    }
+
+    @Transactional
+    public List<Member> searchByMember(String searchType, String searchText, String order, Long max){
+        List<Sort.Order> sorts = new ArrayList<>();
+        int page = 0;
+
+        Sort sort = null;
+
+        // 정렬조건, 페이징
+        if(order.equals("idAsc")){
+            sorts.add(Sort.Order.asc("member_id"));
+        } else if(order.equals("idDesc")){
+            sorts.add(Sort.Order.desc("member_id"));
+        } else if(order.equals("joinAsc")){
+            sorts.add(Sort.Order.asc("member_join_date"));
+        } else if(order.equals("joinDesc")){
+            sorts.add(Sort.Order.desc("member_join_date"));
+        }
+
+        // 전체보기 부분 구현하기!!!!!!!!!!!!!!!!!!!!!!
+        if(max==0){
+
+        }
+
+        Pageable pageable = PageRequest.of(0, Math.toIntExact(max), Sort.by(sorts));
+
+        // 검색
+        if(searchType.equals("all")){
+            searchText='%'+searchText+'%';
+            return memberRepository.searchByMemberAll_nativeQuery(searchText, pageable);
+        } else if(searchType.equals("id")){
+            return memberRepository.findByMemberIdContaining(searchText, pageable);
+        } else if(searchType.equals("name")){
+            return memberRepository.findByMemberNameContaining(searchText, pageable);
+        } else if(searchType.equals("email")){
+            return memberRepository.findByMemberEmailContaining(searchText, pageable);
+        }
+
         return null;
     }
+
+    // ------------------------------------------------
 
     // search 관련
 //    public List<Member> searchByMember(String searchType, String searchText, String order){
@@ -113,20 +174,4 @@ public class MemberService {
         return memberRepository.searchByMemberAllId_nativeQuery(searchText);
     }
 
-    @Transactional(readOnly = true)
-    public Page<Member> getList(int page, String order, int max){
-        List<Sort.Order> sorts = new ArrayList<>();
-        if (order.equals("idAsc")){
-            sorts.add(Sort.Order.asc("membeId"));
-        } else if(order.equals("idDesc")){
-            sorts.add(Sort.Order.desc("memberId"));
-        } else if(order.equals("joinAsc")){
-            sorts.add(Sort.Order.asc("memberJoinDate"));
-        } else if(order.equals("joinDesc")){
-            sorts.add(Sort.Order.desc("memberJoinDate"));
-        }
-
-        Pageable pageable = PageRequest.of(0, max, Sort.by(sorts));
-        return memberRepository.findAll(pageable);
-    }
 }

@@ -48,26 +48,24 @@ public class AdminController {
     public String admin_member(@RequestParam(value="searchType", required = false, defaultValue = "null") @Nullable String searchType,
                                @RequestParam(value="searchText", required = false, defaultValue = "null") @Nullable String searchText,
                                @RequestParam(value="order", required = false, defaultValue = "idAsc") String order,
-                               @PageableDefault(size=5, sort="memberId", direction= Sort.Direction.ASC)Pageable pageable,
+                               @RequestParam(value="max", required = false, defaultValue = "5") Long max,
                                Model model){
         List<Member> list = null;
 
-        if(searchType.equals("all")){
-          list = memberService.searchByMemberAll(searchText, order);
-        } else if(!searchType.equals("null")){
-//            list = memberService.searchByMember(searchType, searchText, order);
-            list = memberService.searchByMember2(searchType, searchText, order, pageable);
-        } else{
-            list = memberService.findAllOrder(order);
+        // 검색 x, 모든 데이터에 대하여 정렬, 페이징 조건만
+        if(searchType.equals("null")){
+            list=memberService.findAllOrder(order, max);
+        } else {
+            list=memberService.searchByMember(searchType, searchText, order, max);
         }
 
-        if(searchType!="null"){
-            System.out.println(searchType);
-            model.addAttribute("searchType", searchType);
-            model.addAttribute("searchText", searchText);
-        }
         model.addAttribute("list",list);
         model.addAttribute("listSize", list.size());
+        model.addAttribute("searchType", searchType);
+        model.addAttribute("searchText", searchText);
+        model.addAttribute("order", order);
+        model.addAttribute("max", max);
+
 
          return "/admin/admin_member";
     }

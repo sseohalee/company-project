@@ -14,6 +14,22 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Boolean existsByMemberId(String memberId);
     Member findByMemberIdAndMemberPw(String memberId, String memberPw);
 
+    //------------------------------------
+    @Query(value="SELECT * FROM company_member",
+            nativeQuery = true)
+    List<Member> findByMemberAll(Pageable pageable);
+
+    List<Member> findByMemberIdContaining(String searchText, Pageable pageable);
+    List<Member> findByMemberNameContaining(String searchText, Pageable pageable);
+    List<Member> findByMemberEmailContaining(String searchText, Pageable pageable);
+
+    @Query(value="SELECT * FROM company_member WHERE member_id LIKE :searchText || member_name LIKE :searchText || member_email LIKE :searchText",
+            nativeQuery = true)
+    List<Member> searchByMemberAll_nativeQuery(String searchText, Pageable pageable);
+
+    //------------------------------------
+
+
     // findAll 정렬
     List<Member> findAllByOrderByMemberIdAsc();
     List<Member> findAllByOrderByMemberIdDesc();
@@ -45,9 +61,5 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     List<Member> findByMemberIdContaining(String searchText, Sort sort);
     List<Member> findByMemberNameContaining(String searchText, Sort sort);
     List<Member> findByMemberEmailContaining(String searchText, Sort sort);
-
-    List<Member> findByMemberIdContaining(String searchText, Pageable pageable);
-    List<Member> findByMemberNameContaining(String searchText, Pageable pageable);
-    List<Member> findByMemberEmailContaining(String searchText, Pageable pageable);
 
 }

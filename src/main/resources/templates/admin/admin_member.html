@@ -20,9 +20,15 @@
 		let param = new URLSearchParams(query);
 
 		const order=param.get("order");
+		const max=param.get("max");
 		if(order != null){
 			document.getElementById(order).selected=true;
 		}
+		if(max != null){
+			let m = "page"+max;
+			document.getElementById(m).selected=true;
+		}
+
 		return true;
 	}
 	</script>
@@ -158,6 +164,7 @@
 			<form action="/admin_member" method="get">
 				<input type="hidden" th:value="${searchType}" id="searchType" name="searchType">
 				<input type="hidden" th:value="${searchText}" id="searchText" name="searchText">
+				<input type="hidden" th:value="${max}" id="max" name="max">
 				<div class="adminDiv">
 					정렬
 					<select class="size" name="order" id="order" onchange="submit();">
@@ -168,15 +175,21 @@
 					</select>
 				</div>
 			</form>
-  		<div class="adminDiv2" id="tableTitle">
-  		  <div>회원목록 <span th:text="${listSize}" />건</div>
-  		  <div>한페이지 행수
-	  		  <select class="size" name="page_select" id="page_select">
-	          <option value="page10" selected>5개만 보기</option>
-	          <option value="page10">10개만 보기</option>
-	        </select>
-  		  </div>
-  		</div>
+			<form action="/admin_member" method="get">
+				<input type="hidden" th:value="${searchType}" id="searchType" name="searchType">
+				<input type="hidden" th:value="${searchText}" id="searchText" name="searchText">
+				<input type="hidden" th:value="${order}" id="order" name="order">
+				<div class="adminDiv2" id="tableTitle">
+					<div>회원목록 <span th:text="${listSize}" />건</div>
+					<div>한페이지 행수
+						<select class="size" name="max" id="max" onchange="submit();">
+							<option value="5" id="page5">5개만 보기</option>
+							<option value="10" id="page10">10개만 보기</option>
+							<option value="0" id="page0">전체 보기</option>
+						</select>
+					</div>
+				</div>
+			</form>
   		<div class="">
   			<table class="adminTable">
   			  <thead>
@@ -232,18 +245,6 @@
 
 
 <script> 
-
-	function changeOrder(order){
-		console.log(order);
-		const curr = window.location.search;
-
-		if(curr==""){
-			location.href='/admin_member?order='+order;
-		}else{
-			loaction.href='/admin_member'+curr+'&&order='+order;
-		}
-		return true;
-	}
 
    // back to top 기능
   $(document).ready(function(){
