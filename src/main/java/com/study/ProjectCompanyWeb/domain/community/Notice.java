@@ -33,10 +33,8 @@ public class Notice {
         this.noticeMemberId = noticeMemberId;
     }
 
-    public void update(String noticeTitle, String noticeContent, String noticeMemberId){
-        this.noticeTitle = noticeTitle;
+    public void update(String noticeContent){
         this.noticeContent = noticeContent;
-        this.noticeMemberId = noticeMemberId;
         this.noticeDate = LocalDate.now();
     }
 }

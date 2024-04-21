@@ -29,6 +29,25 @@
       integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF"
       crossorigin="anonymous"
     ></script>
+    <script>
+      window.onload = function(){
+      let query = window.location.search;
+      let param = new URLSearchParams(query);
+  
+      const order=param.get("order");
+      const max=param.get("max");
+      if(order != null){
+        document.getElementById(order).selected=true;
+      }
+      if(max != null){
+        let m = "page"+max;
+        document.getElementById(m).selected=true;
+      }
+  
+      return true;
+    }
+    </script>
+
   </head>
 
   <body>
@@ -142,9 +161,9 @@
       <!-- 사이드메뉴 -->
       <div id="adminSide">
         <ul>
-          <li><a href="./admin_member.html">회원 관리</a></li>
+          <li><a href="/admin_member">회원 관리</a></li>
           <li>
-            <a href="./admin_notice.html" class="adminSideActive">공지사항 관리</a>
+            <a href="/admin_notice" class="adminSideActive">공지사항 관리</a>
           </li>
           
         </ul>
@@ -154,41 +173,58 @@
         <div class="adminDiv">
           <h3>공지사항 관리</h3>
         </div>
-        <div class="adminDiv">
-          검색 옵션
-          <select name="search_select" id="search_select">
-            <option value="all" selected>전체</option>
-            <option value="title">제목</option>
-            <option value="content">내용</option>
-            <option value="id">작성자아이디</option>
-          </select>
-          <input
-            type="text"
-            name="search_keyword"
-            id="search_keyword"
-            value=""
-          />
-          <input type="image" src="../img/community/search.gif" />
-        </div>
-        <div class="adminDiv">
-          정렬
-          <select class="size" name="order_select" id="order_select">
-            <option value="id_asc" selected>아이디 오름차순</option>
-            <option value="id_desc">아이디 내림차순</option>
-            <option value="reg_date_asc">등록일 오름차순</option>
-            <option value="reg_date_desc">등록일 내림차순</option>
-          </select>
-        </div>
-        <div class="adminDiv2" id="tableTitle">
-          <div>목록 10건</div>
-          <div>
-            한페이지 행수
-            <select class="size" name="page_select" id="page_select">
-              <option value="page10" selected>5개만 보기</option>
-              <option value="page10">10개만 보기</option>
+        <form action="/admin_notice" method="get">
+          <div class="adminDiv">
+            검색 옵션
+            <select name="searchType" id="searchType">
+              <option value="all" selected>전체</option>
+              <option value="title">제목</option>
+              <option value="content">내용</option>
+              <option value="id">작성자아이디</option>
+            </select>
+            <input
+              type="text"
+              name="searchText"
+              id="searchText"
+              value=""
+            />
+            <button type="submit">
+              <input type="image" src="../img/community/search.gif" />
+            </button>
+          </div>
+        </form>
+
+        <form action="/admin_notice" method="get">
+          <input type="hidden" th:value="${searchType}" id="searchType" name="searchType">
+				  <input type="hidden" th:value="${searchText}" id="searchText" name="searchText">
+				  <input type="hidden" th:value="${max}" id="max" name="max">
+          <div class="adminDiv">
+            정렬
+            <select class="size" name="order" id="order" onchange="submit();">
+              <option id ="idAsc" value="idAsc">아이디 오름차순</option>
+              <option id ="idDesc" value="idDesc">아이디 내림차순</option>
+              <option id ="dateAsc" value="dateAsc">등록일 오름차순</option>
+              <option id ="dateDesc"value="dateDesc">등록일 내림차순</option>
             </select>
           </div>
-        </div>
+        </form>
+        <form action="/admin_notice" method="get">
+          <div class="adminDiv2" id="tableTitle">
+            <input type="hidden" th:value="${searchType}" id="searchType" name="searchType">
+				    <input type="hidden" th:value="${searchText}" id="searchText" name="searchText">
+            <input type="hidden" th:value="${order}" id="order" name="order">
+            <div>목록 <span th:text="${listSize}" />건</div>
+            <div>
+              한페이지 행수
+              <select class="size" name="max" id="max" onchange="submit();">
+                <option id="page5" value="5">5개만 보기</option>
+                <option id="page10" value="10">10개만 보기</option>
+                <option id="page0" value="0" selected>전체 보기</option>
+              </select>
+            </div>
+          </div>
+        </form>
+        
         <div class="">
           <table class="adminTable">
             <thead>
@@ -200,50 +236,13 @@
               </tr>
             </thead>
             <tbody>
-              <tr
-                onclick="location.href='./admin_notice_view.html?notice_idx=5';"
-                style="cursor: pointer"
-              >
-                <td>1</td>
-                <td>타이틀1</td>
-                <td>admin</td>
-                <td>2024-04-09</td>
-              </tr>
-              <tr
-                onclick="location.href='./admin_notice_view.html?notice_idx=4';"
-                style="cursor: pointer"
-              >
-                <td>2</td>
-                <td>타이틀1</td>
-                <td>admin</td>
-                <td>2024-04-08</td>
-              </tr>
-              <tr
-                onclick="location.href='./admin_notice_view.html?notice_idx=3';"
-                style="cursor: pointer"
-              >
-                <td>3</td>
-                <td>타이틀1</td>
-                <td>admin</td>
-                <td>2024-04-07</td>
-              </tr>
-              <tr
-                onclick="location.href='./admin_notice_view.html?notice_idx=2';"
-                style="cursor: pointer"
-              >
-                <td>4</td>
-                <td>타이틀1</td>
-                <td>admin</td>
-                <td>2024-04-07</td>
-              </tr>
-              <tr
-                onclick="location.href='./admin_notice_view.html?notice_idx=1';"
-                style="cursor: pointer"
-              >
-                <td>5</td>
-                <td>타이틀1</td>
-                <td>admin</td>
-                <td>2024-04-05</td>
+              <tr th:each="notice, status : ${list}">
+                <td th:text="${status.count}"></td>
+                <td>
+                  <a th:text="${notice.noticeTitle}" th:href="@{/admin_notice_view?noticeIdx={noticeIdx}(noticeIdx=${notice.noticeIdx})}"></a>
+                </td>
+                <td th:text="${notice.noticeMemberId}"></td>
+                <td th:text="${notice.noticeDate}"></td>
               </tr>
             </tbody>
           </table>
@@ -251,7 +250,7 @@
 
         <div class="pageNav adminDiv2">
           
-          <div><a href="./admin_notice_write.html">공지글 쓰기</a></div>
+          <div><a href="/admin_notice_write">공지글 쓰기</a></div>
         </div>
       </div>
     </div>

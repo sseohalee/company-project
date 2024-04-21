@@ -22,7 +22,6 @@ public class MemberController {
     @PostMapping("/join")
     @ResponseBody
     public String join(@ModelAttribute MemberSaveRequestDto dto){
-        System.out.println(dto.toString());
         Long newMemberIdx = memberService.save(dto);
 
         boolean isFound = memberService.existsById(newMemberIdx);
@@ -36,9 +35,7 @@ public class MemberController {
     // 회원가입 - 아이디 중복 확인
     @PostMapping("/dupl")
     public MemberDuplResponseDto dupl(@RequestBody MemberDuplRequestDto dto){
-        System.out.println(dto.getMemberId());
         boolean isFound = memberService.existsByMemberId(dto.getMemberId());
-        System.out.println(isFound);
         if(isFound == true){
             return MemberDuplResponseDto.builder()
                     .status("ok")

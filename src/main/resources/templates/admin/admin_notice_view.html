@@ -140,9 +140,9 @@
       <!-- 사이드메뉴 -->
       <div id="adminSide">
         <ul>
-          <li><a href="./admin_member.html">회원 관리</a></li>
+          <li><a href="/admin_member">회원 관리</a></li>
           <li>
-            <a href="./admin_notice.html" class="adminSideActive">공지사항 관리</a>
+            <a href="/admin_notice" class="adminSideActive">공지사항 관리</a>
           </li>
         </ul>
       </div>
@@ -151,29 +151,31 @@
         <div class="adminDiv">
           <h3>공지사항 관리</h3>
         </div>
-        <div class="noticeViewTitle adminDiv2">
-          <span>[일반]타이틀1</span>
-          <span>
-            <span>글쓴이:admin</span>
-            <span>글번호:5</span>
-          </span>
-        </div>
-        <div class="adminDiv2">
-          <div class="noticeViewContent">
-            <textarea rows="5" cols="50" id="editor4" name="editor4">
-						내용입니다.1</textarea
-            >
+        <form th:action="@{/admin_notice_modify?noticeIdx={noticeIdx}(noticeIdx=${notice.noticeIdx})}" method="post"
+              onsubmit="confirmEdit()">
+          <div class="noticeViewTitle adminDiv2">
+            <span th:text="${notice.noticeTitle}"></span>
+            <span>
+              <span>글쓴이: <span th:text="${notice.noticeMemberId}" /></span>
+              <span>글번호: <span th:text="${notice.noticeIdx}" /></span>
+            </span>
           </div>
-        </div>
-        <div class="noticeViewBtns adminDiv2">
-          <div>
-            <a href="/admin_notice_modify?notice_idx=1">수정</a>
-            <a href="/admin_notice_delete?notice_idx=1">삭제</a>
+          <div class="adminDiv2">
+            <div class="noticeViewContent">
+              <textarea rows="5" cols="50" id="noticeContent" name="noticeContent" th:text="${notice.noticeContent}"></textarea>
+            </div>
           </div>
-          <div>
-            <a href="/admin_notice">목록</a>
+          <div class="noticeViewBtns adminDiv2">
+            <div>
+              <button type="submit">수정</button>
+              <a th:href="@{/admin_notice_delete/{noticeIdx}(noticeIdx=${notice.noticeIdx})}"
+                      onclick="confirmDelete(this)">삭제</a>
+            </div>
+            <div>
+              <a href="/admin_notice">목록</a>
+            </div>
           </div>
-        </div>
+        </form>
       </div>
     </div>
 
@@ -219,6 +221,23 @@
     </div>
 
     <script>
+      function confirmEdit(){
+          var confirmation = confirm("수정하시겠습니까?");
+          if(confirmation){
+            return true;
+          }
+          return false;
+      }
+
+      function confirmDelete(button){
+        var confirmation = confirm("정말로 삭제하시겠습니까?");
+        if (confirmation) {
+          return true;
+        }
+        return false;
+      }
+
+
       // back to top 기능
       $(document).ready(function () {
         $(window).scroll(function () {

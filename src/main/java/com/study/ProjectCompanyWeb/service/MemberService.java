@@ -50,7 +50,7 @@ public class MemberService {
     @Transactional
     public List<Member> findAllOrder(String searchType, String searchText, PageRequest pageRequest){
 
-        String search='%'+searchText+'%';
+        String search='%'+searchText.toLowerCase()+'%';
         if(searchType.equals("null")) return memberRepository.findByMemberAll(pageRequest);
         else if(searchType.equals("all"))return memberRepository.findByMemberSearchAll(search, pageRequest);
         else if(searchType.equals("id")) return memberRepository.findByMemberSearchId(search, pageRequest);
